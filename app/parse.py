@@ -33,15 +33,19 @@ def get_page_url(page_num: int) -> bytes:
 
 
 def get_all_quotes() -> list[Quote]:
-    page = requests.get(BASE_URL).content
-    first_page_soup = BeautifulSoup(page, "html.parser")
+    all_quotes = []
+    page_num = 1
 
-    all_quotes = get_single_page_quotes(first_page_soup)
-
-    for page_num in range(2, 11):
+    while True:
         page = get_page_url(page_num)
         soup = BeautifulSoup(page, "html.parser")
-        all_quotes.extend(get_single_page_quotes(soup))
+        quotes = get_single_page_quotes(soup)
+
+        if not quotes:
+            break
+
+        all_quotes.extend(quotes)
+        page_num += 1
 
     return all_quotes
 
