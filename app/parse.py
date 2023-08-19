@@ -22,7 +22,7 @@ def parse_single_quote(quote_soup: BeautifulSoup) -> Quote:
     )
 
 
-def get_single_page_quotes(page_soup: BeautifulSoup) -> [Quote]:
+def get_single_page_quotes(page_soup: BeautifulSoup) -> list[Quote]:
     quotes = page_soup.select(".quote")
 
     return [parse_single_quote(quote_soup) for quote_soup in quotes]
@@ -32,7 +32,7 @@ def get_page_url(page_num: int) -> bytes:
     return requests.get(f"{BASE_URL}page/{page_num}/").content
 
 
-def get_all_quotes() -> [Quote]:
+def get_all_quotes() -> list[Quote]:
     page = requests.get(BASE_URL).content
     first_page_soup = BeautifulSoup(page, "html.parser")
 
