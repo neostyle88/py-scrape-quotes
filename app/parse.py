@@ -18,11 +18,11 @@ def parse_single_quote(quote_soup: BeautifulSoup) -> Quote:
     return Quote(
         text=quote_soup.select_one(".text").text,
         author=quote_soup.select_one(".author").text,
-        tags=[tag.text for tag in quote_soup.select("a.tag")]
+        tags=[tag.text for tag in quote_soup.select("a.tag")],
     )
 
 
-def get_single_page_quotes(page_soup) -> [Quote]:
+def get_single_page_quotes(page_soup: BeautifulSoup) -> [Quote]:
     quotes = page_soup.select(".quote")
 
     return [parse_single_quote(quote_soup) for quote_soup in quotes]
@@ -50,7 +50,7 @@ QUOTES_FIELDS = [field.name for field in fields(Quote)]
 
 
 def write_quotes_to_csv(quotes: [Quote], csv_file: str) -> None:
-    with open(csv_file, "w", encoding="utf-8") as output_csv_file:
+    with open(csv_file, "w", encoding="utf-8", newline="") as output_csv_file:
         writer = csv.writer(output_csv_file)
         writer.writerow(QUOTES_FIELDS)
         writer.writerows([astuple(quote) for quote in quotes])
